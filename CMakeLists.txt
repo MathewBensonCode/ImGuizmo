@@ -1,13 +1,15 @@
-cmake_minimum_required(VERSION 4.0)
+cmake_minimum_required(VERSION 3.25)
 
 project(ImGuizmo LANGUAGES CXX)
 
-find_package(imgui CONFIG REQUIRED)
+if(PROJECT_IS_TOP_LEVEL)
+    find_package(imgui CONFIG REQUIRED)
+endif()
 
-add_library(imguizmo STATIC)
+add_library(ImGuizmo)
 
 target_sources(
-  imguizmo
+  ImGuizmo
   PRIVATE src/ImGuizmo.cpp 
   PUBLIC FILE_SET
          HEADERS
@@ -17,21 +19,21 @@ target_sources(
          src/ImGuizmo.h
          )
 
-add_library(imguizmo::imguizmo ALIAS imguizmo)
+add_library(ImGuizmo::ImGuizmo ALIAS ImGuizmo)
 
-target_link_libraries(imguizmo PUBLIC imgui::imgui)
+target_link_libraries(ImGuizmo PUBLIC imgui::imgui)
 
 install(
-  TARGETS imguizmo
-  EXPORT imguizmo-targets
+  TARGETS ImGuizmo
+  EXPORT ImGuizmo-targets
   FILE_SET HEADERS
-  DESTINATION ${CMAKE_INSTALL_PREFIX}/include/imguizmo/)
+  DESTINATION include/ImGuizmo/)
 
 install(
-  EXPORT imguizmo-targets
-  DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake/imguizmo
-  NAMESPACE imguizmo::
-  FILE imguizmo-targets.cmake)
+  EXPORT ImGuizmo-targets
+  DESTINATION lib/cmake/ImGuizmo
+  NAMESPACE ImGuizmo::
+  FILE ImGuizmo-targets.cmake)
 
-install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/imguizmoConfig.cmake
-    DESTINATION ${CMAKE_INSTALL_PREFIX}/lib/cmake/imguizmo)
+install(FILES ${CMAKE_CURRENT_SOURCE_DIR}/ImGuizmoConfig.cmake
+    DESTINATION lib/cmake/ImGuizmo)
